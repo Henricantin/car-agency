@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>{{ 'Edit Sale' if sale else 'New Sale' }}</h3>
+
+<form method="post">
+    <select class="form-control mb-2" name="customer_id" required>
+        <option value="">Selecione o cliente</option>
+        {% for c in customers %}
+            <option value="{{ c.id}}" {%if sale and sale.customer_id == c.id %}selected{% endif %}>
+                {{ c.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <select class="form-control mb-2" name="vehicle_id" required>
+        <option value="">Selecione o veículo</option>
+        {% for v in vehicles %}
+            <option value="{{ v.id }}" {% if sale and sale.vehicle_id == v.id %}selected{% endif %}>
+                {{ v.brand }} {{ v.model }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <input class="form-control mb-2" type="number" step="0.01" name="price" placeholder="Valor da venda" value="{{ sale.price if sale else '' }}" required>
+    <button class="btn btn-primary">Salvar</button>
+</form>
+{% endblock %}
