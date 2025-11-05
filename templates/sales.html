@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Vendas</h3>
+
+<a href="/sale/new" class="btn btn-success mb-3">Nova Venda</a>
+
+<div class="sales-grid">
+    <div class="sale-card p-3 shadow-sm rounded bg-white">
+        <p><strong>Cliente: </strong>{{ v.customer_name }}</p>
+        <p><strong>Veículo: </strong>{{ v.vehicle_brand }} {{ v.vehicle_model }}</p>
+        <p><strong>Cor: </strong>{{ v.vehicle_color }}</p>
+        <p><strong>Data: </strong>{{ v.date_sale }}</p>
+        <p><strong>Valor: </strong> R$ {{ "%.2f"|format(v.price) }}</p>
+
+        <div>
+            <a href="/sale/edit/{{ v.id }}" class="btn btn-primary btn-sm">Editar</a>
+            <a href="/sale/delete/{{ v.id }}" class="btn btn-danger btn-sm">Excluir</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+.sales-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.sale-card {
+    border: 1px solid #dee2e6;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sale-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+</style>
+{% endblock %}
