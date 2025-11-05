@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Veículos</h3>
+<a href="/vehicle/new" class="btn btn-success mb-3">Novo Veículo</a>
+
+<form method="get" class="mb-3 d-flex flex-wrap gap-2">
+    <input type="text" name="brand" class="form-control" placeholder="Marca" value="{{ request.args.get('brand', '') }}">
+    <input type="text" name="model" class="form-control" placeholder="Modelo" value="{{ request.args.get('model', '') }}">
+    <input type="text" name="color" class="form-control" placeholder="Cor" value="{{ request.args.get('color', '') }}">
+    <input type="number" name="max_price" step="0.01" class="form-control" placeholder="Valor até" value="{{ request.args.get('max_price', '') }}">
+
+    <button class="btn btn-primary">Pesquisar</button>
+    <a href="{{url_for('vehicles')}}" class="btn btn-secondary">Limpar</a>
+</form>
+
+<div class="vehicles-grid">
+    {% for v in vehicles %}
+    <div class="vehicle-card p-3 shadow-sm rounded bg-white">
+        <p><strong>Marca: </strong>{{ v.brand }}</p>
+        <p><strong>Modelo: </strong>{{ v.model }}</p>
+        <p><strong>Ano: </strong>{{ v.year }}</p>
+        <p><strong>Cor: </strong>{{ v.color }}</p>
+        <p><strong>Preço: </strong> R$ {{ "%.2f"|format(v.price) }}</p>
+
+        <div class="d-flex justify-content-between mt-2">
+            <a href="{{url_for('edit_vehicle', id=v.id)}}" class="btn btn-primary btn-sm mb-2">Editar</a>
+
+            <form action="{{url_for('vehicle_delete', id=v.id)}}" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este veículo?');">
+                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<style>
+    .vehicles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+
+    .vehicle-card {
+        border: 1px solid #dee2e6;
+        transition: transition 0.2s, box-shadow 0.2s;
+    }
+
+    .vehicle-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+</style>
+{% endblock %}
