@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Clientes</h3>
+
+<a href="/customer/new" class="btn btn-success mb-3">Novo Cliente</a>
+
+<div class="customers-grid">
+    {% for c in customers %}
+
+    <div class="customer-card p-3 shadow-sm rounded bg-white">
+        <p><strong>Nome: </strong>{{% c.name %}}</p>
+        <p><strong>E-mail: </strong>{{% c.email %}}</p>
+        <p><strong>Telefone: </strong>{{% c.phone %}}</p>
+        <p><strong>Endereço: </strong>{{% c.address %}}</p>
+
+        <a href="/customer/edit/{{c.id}}" class="btn btn-primary btn-sm mb-2">Editar</a>
+    </div>
+    {% endfor %}
+</div>
+<style>
+.customers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.customer-card {
+    border: 1px solid #dee2e6;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.customer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+</style>
