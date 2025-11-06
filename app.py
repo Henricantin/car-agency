@@ -13,9 +13,6 @@ DB_CONFIG = {
 def get_connection():
     return mysql.connector.connect(**DB_CONFIG)
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
 #-- Main Routes --#
 @app.route('/')
 def index():
@@ -49,3 +46,13 @@ def new_customer():
         return redirect(url_for('customers'))
     
     return render_template('customer_form.html')
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
