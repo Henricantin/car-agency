@@ -184,6 +184,30 @@ def delete_vehicle(id):
     return redirect(url_for('vehicles'))
 
 #-- Sales Routes --#
+@app.route('/sales')
+def sales():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT v.id,
+        c.name AS customer_name,
+        s.brand AS vehicle_brand,
+        s.model AS vehicle_model,
+        s.color AS vehicle_color,
+        v.price,
+        v.sale_date
+    FROM sales v
+    JOIN customers c ON v.customer_id = c.id
+    JOIN vehicles s ON v.vehicle_id = s.id
+    ORDER BY v.sale_date DESC
+    """)
+    sales = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    
+    return render_template('sales.html', sales=sales)
 
 
 

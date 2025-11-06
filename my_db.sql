@@ -25,13 +25,13 @@ CREATE TABLE sales(
     customer_id INT NOT NULL,
     vehicle_id INT NOT NULL,
     price DECIMAL(10,2) NOT NULL,
-    date_sale TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
     FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
     );
 
 USE car_agency;
-INSERT INTO customers(name, email, phone, address) VALUES('Henrique Cantin', 'henrique.cantin@gmail.com', '11940401212', 'Rua Brasil, SN'),
+INSERT INTO customers(name, email, phone, address) VALUES ('Henrique Cantin', 'henrique.cantin@gmail.com', '11940401212', 'Rua Brasil, SN'),
 ('Lucca Bento', 'luccabento@gmail.com', '11987654321', 'Avenida Paulista, 1000'),
 ('Natalia Silva', 'nati.s@outlook.com', '11912345678', 'Rua das Flores, 50'),
 ('Maria Julia', 'maju@hotmail.com', '11923456789', 'Alameda Santos, 200'),
