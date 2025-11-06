@@ -59,7 +59,7 @@ def edit_customer(id):
         phone = request.form['phone']
         address = request.form['address']
         
-        cursor.execute("UPDATE customers SET name=%s, email=%s, phone=%s, address=%s WHERE id=%s", (name, email, phone, address, id))
+        cursor.execute("""UPDATE customers SET name=%s, email=%s, phone=%s, address=%s WHERE id=%s""", (name, email, phone, address, id))
         conn.commit()
         cursor.close()
         conn.close()
@@ -159,7 +159,7 @@ def edit_vehicle(id):
         color = request.form['color']
         price = request.form['price']
         
-        cursor.execute("UPDATE vehicles SET brand=%s, model=%s, year=%s, color=%s, price=%s WHERE id=%s", (brand, model, year, color, price, id))
+        cursor.execute("""UPDATE vehicles SET brand=%s, model=%s, year=%s, color=%s, price=%s WHERE id=%s""", (brand, model, year, color, price, id))
         conn.commit()
         cursor.close()
         conn.close()
@@ -206,10 +206,92 @@ def sales():
 
     cursor.close()
     conn.close()
-    
+
     return render_template('sales.html', sales=sales)
 
+@app.route('/sale/new', methods=['GET', 'POST'])
+def new_sale():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
 
+    cursor.execute("SELECT id, name FROM customers")
+    customers = cursor.fetchall()
+    cursor.execute("SELECT id, brand, model FROM vehicles")
+    vehicles = cursor.fetchall()
 
+    if request.method == 'POST':
+        customer_id = request.form['customer_id']
+        vehicle_id = request.form['vehicle_id']
+        sale_date = request.form['sale_date']
+        price = request.form['price']
+        
+        cursor.execute("INSERT INTO sales (customer_id, vehicle_id, sale_date, price) VALUES (%s, %s, %s, %s)", (customer_id, vehicle_id, sale_date, price))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return redirect(url_for('sales'))
+    
+    cursor.close()
+    conn.close()
+    return render_template('sale_form.html', customers=customers, vehicles=vehicles)
+
+@app.route('/sale/edit/<int:id>', methods=['GET', 'POST'])
+def edit_sale(id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT id, name FROM customers")
+    customers = cursor.fetchall()
+    cursor.execute("SELECT id, brand, model FROM vehicles")
+    vehicles = cursor.fetchall()
+
+    if request.method == 'POST':
+        customer_id = request.form['customer_id']
+        vehicle_id = request.form['vehicle_id']
+        sale_date = request.form['sale_date']
+        price = request.form['price']
+        
+        cursor.execute("""UPDATE sales SET customer_id=%s, vehicle_id=%s, sale_date=%s, price=%s WHERE id=%s""", (customer_id, vehicle_id, sale_date, price, id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return redirect(url_for('sales'))
+    
+    cursor.execute("""
+        SELECT
+            v.id,
+            v.customer_id,
+            v.vehicle_id,
+            v.sale_date,
+            v.price,
+            c.name AS customer_name,
+            s.brand AS vehicle_brand,
+            s.model AS vehicle_model
+        FROM sales v
+        JOIN customers c ON v.customer_id = c.id
+        JOIN vehicles s ON v.vehicle_id = s.id
+        WHERE v.id=%s
+    """, (id,))
+    sale = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('sale_form.html', sale=sale, customers=customers, vehicles=vehicles)
+
+@app.route('/sale/delete/<int:id>')
+def delete_sale(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM sales WHERE id=%s", (id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return redirect(url_for('sales'))
+
+#-- Run the App --#
 if __name__ == '__main__':
     app.run(debug=True)
