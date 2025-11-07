@@ -6,12 +6,13 @@
 <a href="/sale/new" class="btn btn-success mb-3">Nova Venda</a>
 
 <div class="sales-grid">
+    {% for s in sales %}
     <div class="sale-card p-3 shadow-sm rounded bg-white">
-        <p><strong>Cliente: </strong>{{ v.customer_name }}</p>
-        <p><strong>Veículo: </strong>{{ v.vehicle_brand }} {{ v.vehicle_model }}</p>
-        <p><strong>Cor: </strong>{{ v.vehicle_color }}</p>
-        <p><strong>Data: </strong>{{ v.date_sale }}</p>
-        <p><strong>Valor: </strong> R$ {{ "%.2f"|format(v.price) }}</p>
+        <p><strong>Cliente: </strong>{{ s.customer_name }}</p>
+        <p><strong>Veículo: </strong>{{ s.vehicle_brand }} {{ s.vehicle_model }}</p>
+        <p><strong>Cor: </strong>{{ s.vehicle_color }}</p>
+        <p><strong>Data: </strong>{{ s.sale_date }}</p>
+        <p><strong>Valor: </strong> R$ {{ "%.2f"|format(s.price) }}</p>
 
         <div>
             <a href="/sale/edit/{{ v.id }}" class="btn btn-primary btn-sm">Editar</a>

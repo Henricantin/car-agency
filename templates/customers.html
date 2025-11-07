@@ -9,10 +9,10 @@
     {% for c in customers %}
 
     <div class="customer-card p-3 shadow-sm rounded bg-white">
-        <p><strong>Nome: </strong>{{% c.name %}}</p>
-        <p><strong>E-mail: </strong>{{% c.email %}}</p>
-        <p><strong>Telefone: </strong>{{% c.phone %}}</p>
-        <p><strong>Endereço: </strong>{{% c.address %}}</p>
+        <p><strong>Nome: </strong>{{ c.name }}</p>
+        <p><strong>E-mail: </strong>{{ c.email }}</p>
+        <p><strong>Telefone: </strong>{{ c.phone }}</p>
+        <p><strong>Endereço: </strong>{{ c.address }}</p>
 
         <a href="/customer/edit/{{c.id}}" class="btn btn-primary btn-sm mb-2">Editar</a>
     </div>
@@ -35,3 +35,4 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 </style>
+{% endblock %}
